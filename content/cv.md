@@ -8,7 +8,9 @@ showTableOfContents = true
 **Platform Engineer · Hybrid Cloud & AI Infrastructure · Kubernetes · Terraform · Go**
 Bengaluru, Karnataka, India · [arpit2k01jain@gmail.com](mailto:arpit2k01jain@gmail.com)
 
-[Download PDF](/arpit-jain-cv.pdf)
+{{< button href="/arpit-jain-cv.pdf" target="_blank" download="arpit-jain-cv.pdf" >}}
+Download PDF
+{{< /button >}}
 
 ## Summary
 
