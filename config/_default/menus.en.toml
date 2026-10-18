@@ -6,23 +6,23 @@
   weight = 10
 
 [[main]]
+  name = "Experience"
+  pageRef = "experience"
+  weight = 20
+
+[[main]]
   name = "CV"
   pageRef = "cv"
-  weight = 20
+  weight = 30
 
 [[main]]
   name = "Blog"
   pageRef = "posts"
-  weight = 30
+  weight = 40
 
 [[main]]
   name = "Certifications"
   pageRef = "certifications"
-  weight = 40
-
-[[main]]
-  name = "Tags"
-  pageRef = "tags"
   weight = 50
 
 [[main]]
