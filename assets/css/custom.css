@@ -63,11 +63,14 @@
   border-radius: 9999px;
   object-fit: cover;
   margin-bottom: 1rem;
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08);
+  /* White ring + soft halo, like the reference site. */
+  border: 4px solid #ffffff;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 8px 24px -10px rgb(0 0 0 / 0.25);
 }
 
 .dark .profile-avatar {
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12);
+  border-color: #ffffff;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12), 0 8px 24px -10px rgb(0 0 0 / 0.6);
 }
 
 .profile-name {
