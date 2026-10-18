@@ -417,3 +417,41 @@
 .dark .post-card-more {
   color: var(--color-primary-400, #60a5fa);
 }
+
+/* ------------------------------------------------------------------ *
+ * Top navigation — light "pill" background on hover instead of an
+ * underline. Scoped to the header so content links are unaffected.
+ * ------------------------------------------------------------------ */
+
+header nav ul li > a,
+header nav ul li > span {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.55rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Kill Congo's hover underline on nav items. */
+header nav ul li a span,
+header nav ul li span span {
+  text-decoration: none !important;
+}
+header nav ul li a:hover span,
+header nav ul li.group:hover span {
+  text-decoration: none !important;
+}
+
+/* Light pill on hover. */
+header nav ul li > a:hover,
+header nav ul li.group:hover > a,
+header nav ul li.group:hover > span {
+  background: rgb(243 244 246);
+  color: var(--color-primary-700, #1d4ed8);
+}
+
+.dark header nav ul li > a:hover,
+.dark header nav ul li.group:hover > a,
+.dark header nav ul li.group:hover > span {
+  background: rgb(55 65 81 / 0.6);
+  color: var(--color-primary-300, #93c5fd);
+}
