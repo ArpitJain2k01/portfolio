@@ -152,3 +152,138 @@
   width: 1.15rem;
   height: 1.15rem;
 }
+
+/* ------------------------------------------------------------------ *
+ * Table of Contents — "On this page" panel on blog posts
+ * Replaces the plain underlined link list with a clean card.
+ * ------------------------------------------------------------------ */
+
+/* The desktop container Congo renders for the TOC. */
+.toc {
+  font-size: 0.9rem;
+}
+
+/* Drop Congo's dotted left border; use a proper panel instead. */
+.toc > div {
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+/* Panel card */
+.toc #TableOfContents {
+  border: 1px solid rgb(229 231 235);
+  border-radius: 0.75rem;
+  background: rgb(249 250 251);
+  padding: 1rem 1.1rem;
+}
+
+.dark .toc #TableOfContents {
+  border-color: rgb(55 65 81);
+  background: rgb(31 41 55 / 0.5);
+}
+
+/* "On this page" heading above the list */
+.toc #TableOfContents::before {
+  content: "On this page";
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(107 114 128);
+}
+
+.dark .toc #TableOfContents::before {
+  color: rgb(156 163 175);
+}
+
+.toc #TableOfContents ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc #TableOfContents ul ul {
+  margin-left: 0.75rem;
+}
+
+.toc #TableOfContents li {
+  margin: 0;
+  padding: 0;
+}
+
+.toc #TableOfContents a {
+  display: block;
+  padding: 0.28rem 0.6rem;
+  border-radius: 0.4rem;
+  border-left: 2px solid transparent;
+  color: rgb(75 85 99);
+  text-decoration: none !important;
+  line-height: 1.35;
+  transition: color 0.12s ease, background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.dark .toc #TableOfContents a {
+  color: rgb(156 163 175);
+}
+
+.toc #TableOfContents a:hover {
+  color: var(--color-primary-700, #1d4ed8);
+  background: rgb(239 246 255);
+}
+
+.dark .toc #TableOfContents a:hover {
+  color: var(--color-primary-300, #93c5fd);
+  background: rgb(30 58 138 / 0.25);
+}
+
+/* Active section (Congo adds .active via scrollspy where supported) */
+.toc #TableOfContents a.active {
+  color: var(--color-primary-700, #1d4ed8);
+  border-left-color: var(--color-primary-600, #2563eb);
+  background: rgb(239 246 255);
+  font-weight: 600;
+}
+
+.dark .toc #TableOfContents a.active {
+  color: var(--color-primary-300, #93c5fd);
+  background: rgb(30 58 138 / 0.25);
+}
+
+/* ------------------------------------------------------------------ *
+ * Content links — cleaner than the default underlined prose links.
+ * Blue, no underline at rest, subtle underline on hover.
+ * Scoped to article prose so buttons, nav, tags and the TOC are
+ * unaffected (the button shortcode already sets !no-underline).
+ * ------------------------------------------------------------------ */
+
+.prose a {
+  color: var(--color-primary-600, #2563eb);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.12s ease, text-decoration-color 0.12s ease;
+}
+
+.prose a:hover {
+  color: var(--color-primary-700, #1d4ed8);
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary-400, #60a5fa);
+}
+
+.dark .prose a {
+  color: var(--color-primary-400, #60a5fa);
+}
+
+.dark .prose a:hover {
+  color: var(--color-primary-300, #93c5fd);
+}
+
+/* Headings keep their own color; anchor links on headings stay subtle. */
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a {
+  color: inherit;
+}
