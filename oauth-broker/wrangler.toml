@@ -1,0 +1,7 @@
+name = "decap-oauth-broker"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# Secrets (do NOT put them here — set them with wrangler secret put):
+#   wrangler secret put GITHUB_CLIENT_ID
+#   wrangler secret put GITHUB_CLIENT_SECRET

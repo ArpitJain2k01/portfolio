@@ -1,0 +1,92 @@
+# Decap CMS configuration
+# Docs: https://decapcms.org/docs/
+
+backend:
+  name: github
+  repo: ArpitJain2k01/portfolio
+  branch: main
+  # base_url points at the OAuth broker that completes GitHub login.
+  # Replace with your deployed broker URL (see admin/README.md).
+  base_url: https://REPLACE_WITH_OAUTH_BROKER_URL
+  auth_endpoint: /auth
+
+# Commit message templates shown in the repo history.
+site_url: https://arpitjain2k01.github.io/portfolio/
+display_url: https://arpitjain2k01.github.io/portfolio/
+publish_mode: simple
+
+# Where uploaded media (images, etc.) are stored and how they're referenced.
+media_folder: "assets/img"
+public_folder: "/portfolio/img"
+
+collections:
+  # --- Blog posts -----------------------------------------------------------
+  - name: posts
+    label: "Blog posts"
+    label_singular: "Post"
+    description: "Write and edit blog posts. Set 'Draft' off to publish."
+    folder: "content/posts"
+    create: true
+    # Each post is a page bundle: content/posts/<slug>/index.md
+    path: "{{slug}}/index"
+    slug: "{{slug}}"
+    media_folder: ""
+    public_folder: ""
+    # Match the existing TOML front matter (+++).
+    format: toml-frontmatter
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+      - { label: "Draft", name: "draft", widget: "boolean", default: true, hint: "Turn OFF to publish." }
+      - { label: "Summary", name: "summary", widget: "text", required: false, hint: "One or two sentences shown on the blog list and link previews." }
+      - { label: "Tags", name: "tags", widget: "list", default: [], required: false }
+      - { label: "Show table of contents", name: "showTableOfContents", widget: "boolean", default: true, required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # --- Site documents (resume PDF) ------------------------------------------
+  - name: documents
+    label: "Documents"
+    description: "Upload or replace downloadable files such as the resume PDF."
+    files:
+      - name: resume_pdf
+        label: "Resume (PDF)"
+        file: "data/resume.json"
+        description: "Upload a new resume PDF. The Resume page's Download button points at it."
+        media_folder: "/static"
+        public_folder: "/portfolio"
+        fields:
+          - { label: "Resume PDF", name: "file", widget: "file", hint: "Upload a PDF. Keep the filename arpit-jain-resume.pdf to avoid changing links." }
+
+  # --- Editable pages --------------------------------------------------------
+  - name: pages
+    label: "Pages"
+    description: "Edit the standalone pages."
+    files:
+      - name: about
+        label: "About"
+        file: "content/about.md"
+        format: toml-frontmatter
+        fields:
+          - { label: "Title", name: "title", widget: "hidden", default: "About" }
+          - { label: "Description", name: "description", widget: "string", required: false }
+          - { label: "Layout", name: "layout", widget: "hidden", default: "simple" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: experience
+        label: "Experience"
+        file: "content/experience.md"
+        format: toml-frontmatter
+        fields:
+          - { label: "Title", name: "title", widget: "hidden", default: "Experience" }
+          - { label: "Description", name: "description", widget: "string", required: false }
+          - { label: "Layout", name: "layout", widget: "hidden", default: "simple" }
+          - { label: "Show table of contents", name: "showTableOfContents", widget: "boolean", default: true, required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: certifications
+        label: "Certifications"
+        file: "content/certifications.md"
+        format: toml-frontmatter
+        fields:
+          - { label: "Title", name: "title", widget: "hidden", default: "Certifications" }
+          - { label: "Description", name: "description", widget: "string", required: false }
+          - { label: "Layout", name: "layout", widget: "hidden", default: "simple" }
+          - { label: "Body", name: "body", widget: "markdown" }
