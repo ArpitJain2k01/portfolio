@@ -21,7 +21,7 @@ fingerprintAlgorithm = "sha256"
 [footer]
   showCopyright = true
   showThemeAttribution = true
-  showAppearanceSwitcher = true   # manual light/dark toggle
+  showAppearanceSwitcher = false  # already in the top nav
   showScrollToTop = true
 
 [homepage]
@@ -46,7 +46,7 @@ fingerprintAlgorithm = "sha256"
   showTaxonomies = true           # tag chips
   showWordCount = false
   showComments = false
-  sharingLinks = ["linkedin", "x-twitter", "reddit", "email"]
+  sharingLinks = []
 
 [list]
   showBreadcrumbs = false
