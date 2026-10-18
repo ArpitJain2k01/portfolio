@@ -17,13 +17,13 @@ My work spans the full platform stack: infrastructure automation with **Terrafor
 - **Observability** — Prometheus, Grafana, VictoriaMetrics, OpenTelemetry, Loki, CloudWatch.
 - **Go-based tooling** — platform services and automation, including a DNS management platform integrating PowerDNS and Akamai with request-level metering.
 
-## Background
+## Career path
 
-I hold a **B.Tech from IIT Palakkad** (2019–2023). I currently work at **Nava** as a Platform / DevOps engineer, and previously spent ~2.5 years at **Jio Platforms** as an SRE / DevOps engineer operating OpenShift at telco scale in air-gapped environments.
+- **Nava** — Platform / DevOps Engineer · Apr 2026 – Present · Bengaluru
+- **Jio Platforms** — SRE / DevOps Engineer · Oct 2023 – Apr 2026 · Mumbai
+- **IIT Palakkad** — B.Tech · 2019 – 2023
 
-## Why this site
-
-This is my learning log in public — honest notes on what I'm building and learning, with the commands, the output, and the trade-offs. If you want to know how I think, the [blog](/posts/) is the best place to look.
+See the full [career ladder](/experience/) for what I owned and learned at each step, or the [CV](/cv/) for the complete project and technical detail.
 
 ## Get in touch
 
