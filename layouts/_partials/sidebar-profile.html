@@ -41,7 +41,12 @@
     <div class="profile-social">
       {{ range $links := . }}
         {{ range $name, $url := $links }}
-          <a class="profile-social-btn" href="{{ $url | safeURL }}" target="_blank"
+          {{/* Site-relative links (e.g. the RSS "index.xml") must resolve to
+               the site root including any base path (e.g. /portfolio/).
+               Absolute (http, https, mailto) links are used as-is. */}}
+          {{ $href := $url }}
+          {{ if not (or (hasPrefix $url "http") (hasPrefix $url "mailto:")) }}{{ $href = $url | absURL }}{{ end }}
+          <a class="profile-social-btn" href="{{ $href | safeURL }}" target="_blank"
              aria-label="{{ $name | title }}" rel="me noopener noreferrer"
             >{{ partial "icon.html" $name }}</a
           >
