@@ -1,0 +1,24 @@
+locale = "en"
+label = "English"
+direction = "ltr"
+weight = 1
+
+title = "Arpit Jain"
+
+[params]
+  dateFormat = "2 January 2006"
+  description = "Platform / DevOps Engineer — hybrid cloud and AI infrastructure, Kubernetes, Terraform, and Go. A public log of what I'm building and learning."
+  email = "arpit2k01jain@gmail.com"
+  location = "Bengaluru, India"
+
+[params.author]
+  name = "Arpit Jain"
+  image = "img/avatar.jpg"
+  headline = "Platform Engineer · Hybrid Cloud & AI Infrastructure"
+  bio = "Kubernetes · Terraform · Go. Platform engineering across AWS, OpenShift, and bare metal — with a focus on infrastructure security and automation."
+  links = [
+    { github = "https://github.com/ArpitJain2k01" },
+    { linkedin = "https://www.linkedin.com/in/arpit-jain-b6b4a4230/" },
+    { email = "mailto:arpit2k01jain@gmail.com" },
+    { rss = "/index.xml" },
+  ]

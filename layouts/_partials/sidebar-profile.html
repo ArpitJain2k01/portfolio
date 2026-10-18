@@ -1,0 +1,52 @@
+{{/*
+  Sidebar profile card — mirrors the reference layout:
+  circular avatar, name, headline, email link, location, divider,
+  boxed social icon buttons. Styled in assets/css/custom.css.
+*/}}
+{{ $author := site.Language.Params.Author }}
+<section class="profile-card">
+  {{ $lazy := site.Params.enableImageLazyLoading | default true }}
+  {{ $webp := site.Params.enableImageWebp | default true }}
+  {{ $altText := ($author.name | default "Author") }}
+  {{ with $author.image }}
+    {{ $img := resources.Get . }}
+    {{ if $img }}
+      {{ partial "picture.html" (dict "img" $img "alt" $altText "class" "profile-avatar" "lazy" $lazy "webp" $webp) }}
+    {{ end }}
+  {{ end }}
+
+  <h2 class="profile-name">{{ $author.name | default site.Title }}</h2>
+
+  {{ with $author.headline }}
+    <p class="profile-headline">{{ . | markdownify | emojify }}</p>
+  {{ end }}
+
+  {{ with site.Params.email }}
+    <a href="mailto:{{ . }}" class="profile-email">{{ . }}</a>
+  {{ end }}
+
+  {{ with site.Params.location }}
+    <p class="profile-location">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+      <span>{{ . }}</span>
+    </p>
+  {{ end }}
+
+  {{ with $author.links }}
+    <div class="profile-divider"></div>
+    <div class="profile-social">
+      {{ range $links := . }}
+        {{ range $name, $url := $links }}
+          <a class="profile-social-btn" href="{{ $url | safeURL }}" target="_blank"
+             aria-label="{{ $name | title }}" rel="me noopener noreferrer"
+            >{{ partial "icon.html" $name }}</a
+          >
+        {{ end }}
+      {{ end }}
+    </div>
+  {{ end }}
+</section>

@@ -1,0 +1,38 @@
+# -- Main Menu (header) --
+
+[[main]]
+  name = "About"
+  pageRef = "about"
+  weight = 10
+
+[[main]]
+  name = "CV"
+  pageRef = "cv"
+  weight = 20
+
+[[main]]
+  name = "Blog"
+  pageRef = "posts"
+  weight = 30
+
+[[main]]
+  name = "Certifications"
+  pageRef = "certifications"
+  weight = 40
+
+[[main]]
+  name = "Tags"
+  pageRef = "tags"
+  weight = 50
+
+[[main]]
+  identifier = "search"
+  weight = 98
+  [main.params]
+    action = "search"
+
+[[main]]
+  identifier = "appearance"
+  weight = 99
+  [main.params]
+    action = "appearance"

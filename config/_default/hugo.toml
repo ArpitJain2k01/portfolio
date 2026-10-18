@@ -1,0 +1,27 @@
+baseURL = "https://arpitjain2k01.github.io/portfolio/"
+title = "Arpit Jain"
+theme = "congo"
+
+# Set to your repo name path if deploying to GitHub Pages at user.github.io/portfolio.
+# For a user/org site (user.github.io) or a custom domain, leave baseURL as the root.
+
+enableRobotsTXT = true
+summaryLength = 0
+
+# Pagination: posts per page on list views
+[pagination]
+  pagerSize = 10
+
+[taxonomies]
+  tag = "tags"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.highlight]
+    noClasses = false   # use theme CSS classes so the dark/light toggle restyles code
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    tabWidth = 2
