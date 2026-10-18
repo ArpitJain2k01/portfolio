@@ -24,21 +24,27 @@
 }
 
 /* Side-by-side from the large breakpoint up (matches the reference):
-   content on the left, profile sidebar on the right. */
+   content on the left filling the available space, profile sidebar flush
+   to the right edge. */
 @media (min-width: 1024px) {
   .page-shell {
     flex-direction: row;
-    gap: 3.5rem;
+    gap: 4rem;
     align-items: flex-start;
   }
   .page-content {
     flex: 1 1 auto;
-    max-width: 48rem;
+    min-width: 0;      /* let it grow to fill the row (no empty right gutter) */
+    max-width: none;
+  }
+  /* Keep long-form prose comfortably readable even though the column is wide. */
+  .page-content .prose {
+    max-width: 44rem;
   }
   .page-sidebar {
-    order: 0;         /* restore DOM order: sidebar after content → on the right */
-    flex: 0 0 18rem;
-    width: 18rem;
+    order: 0;          /* restore DOM order: sidebar after content → on the right */
+    flex: 0 0 20rem;
+    width: 20rem;
     margin-top: 0;
     margin-bottom: 0;
   }
