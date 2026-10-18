@@ -58,4 +58,4 @@ Where I built the engineering fundamentals and the habit of learning hard things
 
 ---
 
-Want the detail? The full [CV](/cv/) lists the projects and the complete technical stack. For what I'm learning right now, see the [blog](/posts/).
+Want the detail? The full [resume](/resume/) lists the projects and the complete technical stack. For what I'm learning right now, see the [blog](/posts/).

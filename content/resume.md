@@ -1,14 +1,15 @@
 +++
-title = "CV"
-description = "Curriculum vitae — Arpit Jain, Platform / DevOps Engineer."
+title = "Resume"
+description = "Resume — Arpit Jain, Platform / DevOps Engineer."
 layout = "simple"
 showTableOfContents = true
+aliases = ["/cv/"]
 +++
 
 **Platform Engineer · Hybrid Cloud & AI Infrastructure · Kubernetes · Terraform · Go**
 Bengaluru, Karnataka, India · [arpit2k01jain@gmail.com](mailto:arpit2k01jain@gmail.com)
 
-{{< button href="/arpit-jain-cv.pdf" target="_blank" download="arpit-jain-cv.pdf" >}}
+{{< button href="/arpit-jain-resume.pdf" target="_blank" download="arpit-jain-resume.pdf" >}}
 Download PDF
 {{< /button >}}
 

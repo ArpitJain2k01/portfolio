@@ -23,7 +23,7 @@ My work spans the full platform stack: infrastructure automation with **Terrafor
 - **Jio Platforms** — SRE / DevOps Engineer · Oct 2023 – Apr 2026 · Mumbai
 - **IIT Palakkad** — B.Tech · 2019 – 2023
 
-See the full [career ladder](/experience/) for what I owned and learned at each step, or the [CV](/cv/) for the complete project and technical detail.
+See the full [career ladder](/experience/) for what I owned and learned at each step, or the [resume](/resume/) for the complete project and technical detail.
 
 ## Get in touch
 

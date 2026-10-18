@@ -10,4 +10,4 @@ I work across infrastructure automation (**Terraform, GitOps, CI/CD**), high-per
 
 This site is my **learning log in public** — honest notes on what I'm building and figuring out, with the commands, the output, and the trade-offs.
 
-Browse the [blog](/posts/), read more [about me](/about/), or check my [CV](/cv/).
+Browse the [blog](/posts/), read more [about me](/about/), or check my [resume](/resume/).
