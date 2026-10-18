@@ -57,20 +57,32 @@
   text-align: center;
 }
 
-.profile-avatar {
+/* The picture partial puts .profile-avatar on BOTH the <picture> wrapper
+   and the <img>. Draw the ring ONLY on the image; the wrapper is just a
+   layout box, so a single clean white ring shows (no double ring). */
+picture.profile-avatar {
+  display: inline-block;
+  border: 0;
+  box-shadow: none;
+  background: none;
+  margin-bottom: 1rem;
+  line-height: 0;
+}
+
+img.profile-avatar {
   width: 10rem;
   height: 10rem;
   border-radius: 9999px;
   object-fit: cover;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   /* White ring + soft halo, like the reference site. */
   border: 4px solid #ffffff;
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 8px 24px -10px rgb(0 0 0 / 0.25);
+  box-shadow: 0 8px 24px -10px rgb(0 0 0 / 0.25);
 }
 
-.dark .profile-avatar {
+.dark img.profile-avatar {
   border-color: #ffffff;
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12), 0 8px 24px -10px rgb(0 0 0 / 0.6);
+  box-shadow: 0 8px 24px -10px rgb(0 0 0 / 0.6);
 }
 
 .profile-name {
