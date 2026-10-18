@@ -1,0 +1,41 @@
+{{/*
+  Blog post card — the whole card is clickable. Shows tags, date and
+  reading time, title, and summary. Styled in assets/css/custom.css
+  (.post-card*). Overrides Congo's default row-style article link.
+*/}}
+{{ $url := .Permalink }}
+{{ with .Params.externalUrl }}{{ $url = . }}{{ end }}
+<article class="post-card">
+  <a class="post-card-link" href="{{ $url }}"
+     {{ with .Params.externalUrl }}target="_blank" rel="external noopener"{{ end }}
+     aria-label="{{ .Title | emojify }}">
+
+    {{ with .Params.tags }}
+      <div class="post-card-tags">
+        {{ range first 4 . }}<span class="post-card-tag">{{ . }}</span>{{ end }}
+      </div>
+    {{ end }}
+
+    <h3 class="post-card-title">
+      {{ .Title | emojify }}
+      {{ with .Params.externalUrl }}<span class="post-card-ext" aria-hidden="true">&#8599;</span>{{ end }}
+      {{ if and .Draft .Site.Params.article.showDraftLabel }}
+        <span class="post-card-draft">Draft</span>
+      {{ end }}
+    </h3>
+
+    <div class="post-card-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (.Site.Params.dateFormat | default "2 January 2006") }}</time>
+      {{ if and (.Site.Params.article.showReadingTime | default true) (ne .ReadingTime 0) }}
+        <span class="post-card-dot">·</span>
+        <span>{{ .ReadingTime }} min read</span>
+      {{ end }}
+    </div>
+
+    {{ with .Summary }}
+      <p class="post-card-summary">{{ . | plainify | emojify }}</p>
+    {{ end }}
+
+    <span class="post-card-more">Read more &rarr;</span>
+  </a>
+</article>
