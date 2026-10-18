@@ -7,8 +7,11 @@
 
 /* --- Two-column shell --------------------------------------------- */
 
+/* Mobile (default): stack as a column with the profile card ON TOP,
+   then the page heading and content below it. */
 .page-shell {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-content {
@@ -16,13 +19,15 @@
 }
 
 .page-sidebar {
-  margin-top: 3.5rem;
+  order: -1;          /* profile card first on mobile */
+  margin-bottom: 2.5rem;
 }
 
-/* Side-by-side from the large breakpoint up (matches the reference). */
+/* Side-by-side from the large breakpoint up (matches the reference):
+   content on the left, profile sidebar on the right. */
 @media (min-width: 1024px) {
   .page-shell {
-    display: flex;
+    flex-direction: row;
     gap: 3.5rem;
     align-items: flex-start;
   }
@@ -31,9 +36,11 @@
     max-width: 48rem;
   }
   .page-sidebar {
+    order: 0;         /* restore DOM order: sidebar after content → on the right */
     flex: 0 0 18rem;
     width: 18rem;
     margin-top: 0;
+    margin-bottom: 0;
   }
   .page-sidebar-inner {
     position: sticky;
