@@ -5,9 +5,8 @@ backend:
   name: github
   repo: ArpitJain2k01/portfolio
   branch: main
-  # base_url points at the OAuth broker that completes GitHub login.
-  # Replace with your deployed broker URL (see admin/README.md).
-  base_url: https://REPLACE_WITH_OAUTH_BROKER_URL
+  # OAuth broker (Cloudflare Worker) that completes GitHub login.
+  base_url: https://decap-oauth-broker.arpit2k01jain.workers.dev
   auth_endpoint: /auth
 
 # Commit message templates shown in the repo history.
