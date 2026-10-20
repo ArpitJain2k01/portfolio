@@ -1,0 +1,18 @@
+# Projects shown as cards on /projects/.
+# Add a new entry here and it renders automatically.
+- title: "Secure Lab: OWASP Juice Shop + Wazuh on AWS"
+  stack: "Terraform · AWS · K3s · ModSecurity WAF · WireGuard · Wazuh SIEM · DevSecOps"
+  repo: "https://github.com/ArpitJain2k01/juiceshop"
+  summary: >-
+    A fully automated, security-first lab that stands up OWASP Juice Shop — the
+    deliberately vulnerable web app — behind a Web Application Firewall, monitored by a
+    SIEM, and reachable only through a VPN. Entirely Terraform-driven and reproducible:
+    supply credentials and variables, and it comes up with a single documented command.
+  points:
+    - "**Application** — OWASP Juice Shop on single-node K3s, exposed only as an internal ClusterIP (no public app endpoint)."
+    - "**WAF** — a ModSecurity + OWASP Core Rule Set reverse proxy: allowed requests pass (200), malicious ones are blocked (403), origin can't be bypassed."
+    - "**VPN-only access** — a WireGuard gateway is the single public entry point; the app and SIEM have no public IPs."
+    - "**SIEM** — Wazuh (manager + indexer + dashboard) on a dedicated VM, with an agent shipping WAF/ingress and app logs to persistent storage."
+    - "**Deployment verifier** — each run sends a unique marker through the WAF and confirms it in Wazuh via the Indexer API; deployment is gated on that end-to-end proof."
+    - "**Cloud security** — least-privilege security groups and IAM, no public workloads, encrypted EBS, IMDSv2, VPC flow logs; state and secrets kept out of git."
+    - "**CI/CD** — Terraform validation, Trivy (IaC + filesystem), Gitleaks (secrets), and the verifier, with a deploy job gated on all checks behind protected branches."
