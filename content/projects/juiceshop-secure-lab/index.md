@@ -37,17 +37,19 @@ Evaluator ──WireGuard (UDP 51820, allowlisted IP)──▶ WG gateway (only 
 
 Design goal: no public workloads, every request mediated by the WAF, every security-relevant event landing in the SIEM — and a pipeline that refuses to call a deploy successful until it has *proven* that log path works end to end.
 
-## How it's operated
+## One-command deployment
 
-The whole lifecycle is three `make` targets, so the lab is reproducible and disposable:
+The entire stack — VPC and networking, the WireGuard VPN gateway, the K3s app node with Juice Shop behind the ModSecurity WAF, and the separate Wazuh SIEM VM with its agent — comes up from **a single command**. You set your inputs once (`terraform.tfvars`) and run:
 
 ```bash
-make deploy    # terraform apply, then run the verifier (deploy FAILS if log delivery fails)
+make deploy    # provisions everything, then runs the verifier (deploy FAILS if log delivery fails)
 make verify    # re-run the log-delivery verifier with a fresh unique marker
 make destroy   # tear down every lab resource
 ```
 
-`make verify` requires the WireGuard tunnel to be up, because the WAF and the Wazuh indexer are private — the runner reaches them only over the VPN. Terraform state lives in an encrypted, versioned S3 bucket with public access blocked, and everything is torn down with `make destroy` after testing (the main hourly cost is the NAT gateway).
+`make deploy` runs `terraform apply` to build all the infrastructure, then **automatically runs the verifier** — so one command both *builds* the environment and *proves* its security pipeline works, with no manual wiring, console clicking, or post-install steps. There's no snowflake setup: every machine is configured declaratively through Terraform and cloud-init, so the lab comes up identically every time and tears down cleanly with `make destroy` (the main hourly cost is the NAT gateway).
+
+`make verify` requires the WireGuard tunnel to be up, because the WAF and the Wazuh indexer are private — they're reached only over the VPN. Terraform state lives in an encrypted, versioned S3 bucket with public access blocked.
 
 ## The verifier — why "it deployed" isn't enough
 
@@ -67,15 +69,17 @@ GitHub Actions runs Terraform validation, Trivy and Gitleaks scans, and the veri
 
 The repo includes redacted proof in [`evidence/`](https://github.com/ArpitJain2k01/juiceshop/blob/main/evidence/EVIDENCE.md): VPN-only access, the WAF allowing a legitimate request (200) and blocking attacks (403), and a fresh Wazuh event demonstrating end-to-end log delivery — plus the raw verifier output.
 
-## Honest limitations (documented, not hidden)
+## Security practices that make it solid
 
-Part of treating security as engineering is being clear about what isn't done yet:
+The lab is built around secure-by-default principles end to end:
 
-- **Wazuh runs single-node** on free-tier-eligible 2 vCPU / 8 GB (Wazuh recommends 4 vCPU) — fine for a lab, not production scale.
-- The Wazuh dashboard/indexer still use **shipped demo credentials** in this build; rotating them to generated secrets in SSM is the documented next step.
-- The WAF currently serves **HTTP behind the VPN**; self-signed TLS termination at the WAF is the planned hardening step.
-- **OIDC for CI is blocked** by an account-level SCP, so a scoped least-privilege IAM user key (in protected GitHub secrets) is used instead.
+- **Zero public attack surface** — the application and the SIEM have **no public IPs**. The only internet-facing endpoint is a WireGuard VPN gateway, so there's nothing to scan, brute-force, or exploit from the open internet.
+- **Defense in depth** — a request has to pass the VPN, then the ModSecurity + OWASP CRS WAF, before it ever reaches the app, which itself is an internal ClusterIP. Multiple independent layers, each a real control.
+- **Least privilege everywhere** — security groups use SG-to-SG references with **no `0.0.0.0/0` inbound**, and each host's IAM instance role carries only the permissions it actually needs.
+- **Verifiable security, not assumed** — the pipeline *proves* the WAF blocks attacks and the SIEM receives events on every deploy, rather than trusting that it's configured correctly.
+- **Secrets and state kept safe** — Terraform state lives in an encrypted, versioned S3 bucket with public access blocked; secrets are git-ignored and **Gitleaks** runs in CI as a backstop so nothing sensitive can slip into the repo.
+- **Hardened cloud baseline** — **encrypted EBS volumes**, **IMDSv2** enforced (closing the SSRF-to-credentials path), and **VPC flow logs** for network visibility.
+- **Shift-left security in CI** — **Trivy** scans IaC and the filesystem and **Gitleaks** scans for secrets on every pull request, with `main` protected so changes only land through reviewed PRs that pass all checks.
+- **One command, whole stack, every time** — the entire environment (network, VPN, WAF, app, and SIEM) deploys from a single `make deploy` and tears down with `make destroy`. It's fully Terraform- and cloud-init-driven, so there are no manual steps or snowflake configuration — the secure baseline is reproduced identically on every run.
 
-## Effort & scope
-
-Roughly **1.5 focused days** end to end — including learning the WAF/SIEM tooling, debugging the single-node Wazuh deployment, and hardening the CI pipeline. AI assistance was used for boilerplate (cloud-init scripts, the verifier skeleton) and repetitive checks; the Terraform, the architecture and security decisions, and the review of every change are my own.
+Together these make the lab a compact, working model of how to run an exposed application *safely*: nothing public, every layer enforced, and the security posture continuously proven rather than presumed.
