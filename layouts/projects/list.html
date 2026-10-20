@@ -1,0 +1,40 @@
+{{ define "main" }}
+  <article>
+    <header class="max-w-prose">
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        {{ .Title | emojify }}
+      </h1>
+    </header>
+
+    {{ with .Content }}
+      <section class="prose mt-4 max-w-full dark:prose-invert">{{ . | emojify }}</section>
+    {{ end }}
+
+    <section class="mt-6">
+      {{ range .Pages }}
+        <article class="post-card">
+          <div class="post-card-link project-card">
+            {{ with .Params.repo }}
+              <a class="project-card-gh" href="{{ . }}" target="_blank"
+                 rel="noopener noreferrer" aria-label="View the repository on GitHub" title="View on GitHub"
+                 onclick="event.stopPropagation()">
+                {{ partial "icon.html" "github" }}
+              </a>
+            {{ end }}
+
+            <a class="project-card-open" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">
+              <h3 class="post-card-title">{{ .Title | emojify }}</h3>
+              {{ with .Params.stack }}
+                <div class="post-card-meta project-card-stack">{{ . }}</div>
+              {{ end }}
+              {{ with .Summary }}
+                <p class="post-card-summary">{{ . | plainify | emojify }}</p>
+              {{ end }}
+              <span class="post-card-more">View project &rarr;</span>
+            </a>
+          </div>
+        </article>
+      {{ end }}
+    </section>
+  </article>
+{{ end }}

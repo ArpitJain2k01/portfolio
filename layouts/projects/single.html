@@ -1,0 +1,25 @@
+{{ define "main" }}
+  <article>
+    <header class="max-w-prose">
+      {{ partial "breadcrumbs.html" . }}
+      <div class="project-single-head">
+        <h1 class="mb-2 mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+          {{ .Title | emojify }}
+        </h1>
+        {{ with .Params.repo }}
+          <a class="project-card-gh project-single-gh" href="{{ . }}" target="_blank"
+             rel="noopener noreferrer" aria-label="View the repository on GitHub" title="View on GitHub">
+            {{ partial "icon.html" "github" }}
+          </a>
+        {{ end }}
+      </div>
+      {{ with .Params.stack }}
+        <div class="post-card-meta project-card-stack mb-6">{{ . }}</div>
+      {{ end }}
+    </header>
+
+    <section class="prose mt-0 max-w-full dark:prose-invert">
+      {{ .Content | emojify }}
+    </section>
+  </article>
+{{ end }}

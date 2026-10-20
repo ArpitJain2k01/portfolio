@@ -603,3 +603,24 @@ header nav ul li.group:hover > span {
 .dark .project-card-points li {
   color: rgb(209 213 219);
 }
+
+/* Clickable area of a project list card (title/summary open the page). */
+.project-card-open {
+  display: block;
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* Project detail header: title with the GitHub icon beside it. */
+.project-single-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.project-single-gh {
+  position: static;      /* override the absolute positioning used on cards */
+  flex: 0 0 auto;
+  margin-top: 0.4rem;
+}
