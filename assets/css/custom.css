@@ -107,15 +107,68 @@ img.profile-avatar {
   color: rgb(156 163 175);
 }
 
-.profile-email {
+.profile-email-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   margin-bottom: 0.75rem;
+}
+
+.profile-email {
   word-break: break-word;
   color: var(--color-primary-600, #2563eb);
+}
+
+.dark .profile-email {
+  color: var(--color-primary-400, #60a5fa);
 }
 
 .profile-email:hover {
   text-decoration: underline;
 }
+
+/* Copy-to-clipboard button to the right of the email. */
+.profile-email-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 0.4rem;
+  background: transparent;
+  color: rgb(107 114 128);
+  cursor: pointer;
+  transition: color 0.12s ease, border-color 0.12s ease, background-color 0.12s ease;
+}
+
+.profile-email-copy:hover {
+  color: var(--color-primary-600, #2563eb);
+  border-color: var(--color-primary-400, #60a5fa);
+}
+
+.dark .profile-email-copy {
+  border-color: rgb(55 65 81);
+  color: rgb(156 163 175);
+}
+
+.dark .profile-email-copy:hover {
+  color: var(--color-primary-300, #93c5fd);
+}
+
+.profile-email-copy svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* Toggle copy vs. check icon; show green check briefly after copying. */
+.profile-email-copy .icon-check { display: none; }
+.profile-email-copy.copied { color: #16a34a; border-color: #16a34a; }
+.profile-email-copy.copied .icon-copy { display: none; }
+.profile-email-copy.copied .icon-check { display: block; }
 
 .profile-location {
   display: flex;
