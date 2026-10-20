@@ -55,20 +55,29 @@ export default {
         ? JSON.stringify({ token: data.access_token, provider: "github" })
         : JSON.stringify({ error: data.error || "no token" });
 
-      const html = `<!doctype html><html><body><script>
+      const message = `authorization:github:${status}:${payload}`;
+      const html = `<!doctype html><html><head><meta charset="utf-8"></head><body><script>
         (function () {
-          function send(e) {
-            window.opener && window.opener.postMessage(
-              'authorization:github:${status}:${payload.replace(/'/g, "\\'")}',
-              e && e.origin ? e.origin : '*'
-            );
+          var message = ${JSON.stringify(message)};
+          function receive(e) {
+            if (!window.opener) return;
+            window.opener.postMessage(message, e.origin || "*");
           }
-          window.addEventListener('message', send, false);
-          window.opener && window.opener.postMessage('authorizing:github', '*');
+          window.addEventListener("message", receive, false);
+          // Kick off the handshake: Decap replies to "authorizing:github",
+          // then we send the result above.
+          if (window.opener) {
+            window.opener.postMessage("authorizing:github", "*");
+          } else {
+            document.body.innerHTML =
+              "Login complete. You can close this window and return to the CMS.";
+          }
         })();
-      </script>Logging you in…</body></html>`;
+      </script>Logging you in...</body></html>`;
 
-      return new Response(html, { headers: { "Content-Type": "text/html" } });
+      return new Response(html, {
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      });
     }
 
     return new Response("Decap OAuth broker. Use /auth to start.", {

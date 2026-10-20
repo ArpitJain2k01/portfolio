@@ -2,8 +2,8 @@
 title = "Hardening Kubernetes Workloads with securityContext and Kyverno"
 date = 2026-10-17
 draft = false
-summary = "A practical walk through pod and container securityContext — the settings worth enforcing, why each one matters — and how Kyverno turns them from a guideline into fail-closed policy without breaking your workloads."
-tags = ["kubernetes", "security", "kyverno"]
+summary = "A practical walk through pod and container securityContext, network default-deny with NetworkPolicy, and how Kyverno turns all of it from a guideline into fail-closed policy without breaking your workloads."
+tags = ["kubernetes", "security", "kyverno", "networkpolicy"]
 showTableOfContents = true
 +++
 
@@ -128,10 +128,84 @@ If you're starting from zero, this is a high-value baseline — most map directl
 
 Ship them all as `Audit`, clean up the reports, then enforce. The ones most likely to block real workloads are the read-only root filesystem and the probe requirements — tackle those with the most care.
 
+## Don't forget the network: default-deny with NetworkPolicy
+
+A hardened pod still sits on a flat network by default. In most clusters, **any pod can talk to any other pod** — so a single compromised container can reach your database, scrape internal services, or exfiltrate data laterally. `securityContext` locks down the *inside* of a pod; NetworkPolicy locks down what it can *reach*. You want both.
+
+The foundational move is a **default-deny** policy per namespace, then explicitly allow only the traffic each app needs. Start with ingress:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: app
+spec:
+  podSelector: {}            # all pods in the namespace
+  policyTypes:
+    - Ingress                # with no ingress rules below, all ingress is denied
+```
+
+Then allow exactly what's needed — e.g. the API pods accept traffic only from the ingress controller, and the database accepts traffic only from the API:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-allow-from-api
+  namespace: app
+spec:
+  podSelector:
+    matchLabels: { app: postgres }
+  policyTypes: ["Ingress"]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: { app: api }
+      ports:
+        - { protocol: TCP, port: 5432 }
+```
+
+Two things people miss:
+
+- **Egress matters too.** A default-deny *ingress* policy still lets a compromised pod call out. For sensitive namespaces, add a `default-deny-egress` and then allow only DNS (to `kube-dns`) plus the specific destinations the app needs. This is what actually stops data exfiltration and C2 callbacks.
+- **DNS is the first thing you'll break.** The moment you deny egress, pods can't resolve names until you explicitly allow UDP/TCP 53 to the cluster DNS. Allow it in the same change, or everything "mysteriously" fails.
+
+### Making it a policy, not a hope
+
+Just like `securityContext`, "please add a default-deny to your namespace" rots. Enforce it with Kyverno: **generate** a default-deny policy into every new namespace automatically, so no namespace ever ships wide open.
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-default-deny
+spec:
+  rules:
+    - name: default-deny-per-namespace
+      match:
+        any:
+          - resources:
+              kinds: ["Namespace"]
+      generate:
+        apiVersion: networking.k8s.io/v1
+        kind: NetworkPolicy
+        name: default-deny
+        namespace: "{{request.object.metadata.name}}"
+        synchronize: true
+        data:
+          spec:
+            podSelector: {}
+            policyTypes: ["Ingress", "Egress"]
+```
+
+Now every namespace is deny-by-default from birth, and teams opt *in* to the traffic they need with allow policies — the same inversion that makes `securityContext` enforcement work. One caveat: roll this out namespace-by-namespace with the allow-rules ready, because a default-deny-egress dropped onto a running namespace with no DNS allow will take its apps down. Audit-first discipline applies here too.
+
 ## Takeaways
 
 - A `securityContext` is a real threat boundary. Set `runAsNonRoot`, `allowPrivilegeEscalation: false`, `readOnlyRootFilesystem`, `drop: ["ALL"]`, and a seccomp profile as your default, not your exception.
+- **Pair it with network default-deny.** `securityContext` hardens the inside of a pod; NetworkPolicy controls what it can reach. Deny ingress *and* egress by default, allow only what's needed (and remember DNS), and have Kyverno generate the default-deny into every namespace.
 - A guideline that depends on humans remembering it will rot. An admission policy enforces it on every single deployment, forever.
-- **Always roll out policy as Audit first.** Flipping straight to Enforce on a live cluster is how a security change becomes an outage.
+- **Always roll out policy as Audit first.** Flipping straight to Enforce — or dropping a default-deny-egress onto a live namespace — is how a security change becomes an outage.
 
 That last point is the one I'd tattoo on a wall. The policies are easy; the rollout discipline is what keeps you employed.
